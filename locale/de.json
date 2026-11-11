@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chat",
+    "description": "Öffnet eine konfigurierbare KI-Webseite (standardmäßig DeepSeek Chat) in der linken Seitenleiste der DSH-Desktop-App, ohne DSH-Token zu verbrauchen."
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chat",
+    "description": "Abre uma página web de IA configurável (DeepSeek Chat por padrão) na barra lateral esquerda do aplicativo de desktop DSH, sem consumir tokens do DSH."
+  }
+}

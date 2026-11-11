@@ -1,0 +1,52 @@
+{
+  "name": "dsh-chat",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Chat panel for the DSH desktop app: open a configurable AI web page (default DeepSeek Chat) without spending DSH tokens.",
+  "icon": "./icon.svg",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Qaiii/Chat.git"
+  },
+  "homepage": "https://github.com/Qaiii/Chat",
+  "bugs": {
+    "url": "https://github.com/Qaiii/Chat/issues"
+  },
+  "exports": {
+    ".": "./index.js",
+    "./client": "./client.js",
+    "./package.json": "./package.json",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg"
+  },
+  "files": [
+    "index.js",
+    "client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "node --test --test-isolation=none tests/*.test.mjs",
+    "check": "node --check index.js && node --check client.js"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.5 <0.3.0"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout"
+      ]
+    }
+  }
+}

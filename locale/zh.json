@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chat",
+    "description": "在 DSH 桌面版左侧栏打开一个可配置的 AI 网页（默认 DeepSeek 网页版），不消耗 DSH token。"
+  }
+}

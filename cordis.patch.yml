@@ -1,0 +1,6 @@
+# dsh-chat bundle layer: one Host row. The Web client loads this package's
+# `./client` bundle as the browser half because package.json declares `dsh.client`.
+# The Host half is a no-op; the Chat panel and its webview live in the browser half.
+- insert:
+    - id: dsh-chat
+      name: dsh-chat

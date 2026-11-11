@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Chat",
+    "description": "DSH デスクトップ版の左サイドバーで、設定可能な AI ウェブページ（既定は DeepSeek チャット）を開きます。DSH のトークンは消費しません。"
+  }
+}
