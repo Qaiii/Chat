@@ -112,6 +112,9 @@ function createFakeDocument() {
     loaded: [],
     loadOptions: [],
     userAgentCalls: [],
+    scripts: [],
+    guestStorage: {},
+    restoreData: {},
     backCalls: 0,
     forwardCalls: 0,
     reloadCalls: 0,
@@ -141,6 +144,14 @@ function createFakeDocument() {
     setUserAgent(value) {
       this.userAgentCalls.push(value)
       return true
+    },
+    executeJavaScript(code) {
+      this.scripts.push(code)
+      if (code.includes('localStorage.setItem')) {
+        this.guestStorage = { ...this.restoreData }
+        return Promise.resolve(true)
+      }
+      return Promise.resolve({ ...this.guestStorage })
     },
     getURL() { return this.currentUrl },
     getTitle() { return this.title },
@@ -367,6 +378,107 @@ test('the webview controller acquires, attaches, loads, and releases a guest', a
   await tick()
   assert.equal(fake.element.removed, true)
   assert.deepEqual(calls.release, ['lease-1'])
+})
+
+test('guest localStorage snapshots are keyed by origin and cleared by origin', () => {
+  const { registrations } = boot()
+  const face = mainFace(registrations)
+  const storage = makeStorage()
+  const origin = 'https://chat.deepseek.com'
+  assert.equal(face.readGuestStorage(origin, storage), null)
+  assert.equal(face.saveGuestStorage(origin, {
+    userToken: '"token"',
+    __appKit_userInfo: '{"id":1}',
+    ignored: 42,
+  }, storage), true)
+  assert.deepEqual(face.readGuestStorage(origin, storage), {
+    userToken: '"token"',
+    __appKit_userInfo: '{"id":1}',
+  })
+  assert.equal(face.saveGuestStorage('file:///tmp', { a: 'b' }, storage), false)
+  assert.equal(face.saveGuestStorage(origin, {}, storage), false)
+  assert.equal(face.removeGuestStorage('https://example.com', storage), false)
+  assert.equal(face.removeGuestStorage(origin, storage), true)
+  assert.equal(face.readGuestStorage(origin, storage), null)
+  assert.equal(face.saveGuestStorage(origin, { userToken: '"token"' }, storage), true)
+  assert.equal(face.clearGuestStorage(storage), true)
+  assert.equal(face.readGuestStorage(origin, storage), null)
+  assert.equal(face.hasLiveLogin({ userToken: '{"value":"token","__version":"0"}' }), true)
+  assert.equal(face.hasLiveLogin({ userToken: '{"value":null,"__version":"0"}' }), false)
+  assert.equal(face.hasLiveLogin({ userToken: '"token"' }), true)
+  assert.equal(face.hasLiveLogin({}), false)
+})
+
+test('the webview controller restores a saved guest snapshot and captures the live storage', async () => {
+  const { registrations } = boot()
+  const face = mainFace(registrations)
+  const fake = createFakeDocument()
+  const { bridge } = createFakeBridge()
+  const snapshot = { userToken: '"token"', __appKit_userInfo: '{"id":1}' }
+  fake.element.guestStorage = { 'deepseek-device-id:chat': 'device-id' }
+  fake.element.restoreData = snapshot
+  const saved = []
+  const controller = face.createWebviewController({
+    document: fake.document,
+    bridge,
+    container: fake.container,
+    url: 'https://chat.deepseek.com/',
+    readGuestStorage: (origin) => {
+      assert.equal(origin, 'https://chat.deepseek.com')
+      return snapshot
+    },
+    writeGuestStorage: (origin, data) => {
+      saved.push({ origin, data })
+      return true
+    },
+    removeGuestStorage: () => true,
+    onState: () => {},
+  })
+  await tick()
+  fake.element.dispatch('dom-ready')
+  fake.element.dispatch('did-stop-loading')
+  await tick()
+  await tick()
+  assert.ok(fake.element.scripts.some((code) => code.includes('localStorage.setItem')))
+  assert.equal(fake.element.reloadCalls, 1)
+  fake.element.dispatch('did-stop-loading')
+  await tick()
+  assert.equal(saved.length, 1)
+  assert.equal(saved[0].origin, 'https://chat.deepseek.com')
+  assert.equal(saved[0].data.userToken, '"token"')
+  controller.dispose()
+})
+
+test('a live guest login is not replaced by an older snapshot', async () => {
+  const { registrations } = boot()
+  const face = mainFace(registrations)
+  const fake = createFakeDocument()
+  const { bridge } = createFakeBridge()
+  fake.element.guestStorage = { userToken: '"live-token"' }
+  const saved = []
+  const controller = face.createWebviewController({
+    document: fake.document,
+    bridge,
+    container: fake.container,
+    url: 'https://chat.deepseek.com/',
+    claimRestore: () => true,
+    readGuestStorage: () => ({ userToken: '"old-token"' }),
+    writeGuestStorage: (origin, data) => {
+      saved.push({ origin, data })
+      return true
+    },
+    removeGuestStorage: () => true,
+    onState: () => {},
+  })
+  await tick()
+  fake.element.dispatch('dom-ready')
+  fake.element.dispatch('did-stop-loading')
+  await tick()
+  assert.equal(fake.element.reloadCalls, 0)
+  assert.equal(fake.element.scripts.some((code) => code.includes('localStorage.setItem')), false)
+  assert.equal(saved.length, 1)
+  assert.equal(saved[0].data.userToken, '"live-token"')
+  controller.dispose()
 })
 
 test('a failed acquire reports an error instead of throwing', async () => {

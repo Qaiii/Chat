@@ -38,6 +38,10 @@ window.__ModuleLoader__.load({
     const DEFAULT_URL = 'https://chat.deepseek.com/'
     const CONFIG_KEY = 'dsh-chat.config.v1'
     const LAST_URL_KEY = 'dsh-chat.last-url.v1'
+    const GUEST_STORAGE_KEY = 'dsh-chat.guest-storage.v1'
+    const GUEST_STORAGE_LIMIT = 1500000
+    const GUEST_STORAGE_SITES = 4
+    const RESTORE_MARKER_PREFIX = 'dsh-chat.session.restored.'
     const WORKSPACE_KEY = 'dsh-chat'
     const MAX_URL_LENGTH = 16384
 
@@ -55,6 +59,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Web address',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'Default: https://chat.deepseek.com/',
+      'settings.loginHint': 'Login state is saved on this device and restored after restarting the app.',
+      'settings.loginSnapshotSaved': 'A saved login snapshot was found; it will be restored after restarting the app.',
+      'settings.loginSnapshotMissing': 'No saved login snapshot yet. After signing in, wait a few seconds and reopen this dialog.',
+      'settings.clearLogin': 'Clear saved login',
+      'settings.loginCleared': 'Saved login cleared. You will need to sign in again after restarting the app.',
       'settings.reset': 'Reset to default',
       'settings.cancel': 'Cancel',
       'settings.save': 'Save and open',
@@ -82,6 +91,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': '网页地址',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': '默认：https://chat.deepseek.com/',
+      'settings.loginHint': '登录状态会保存在本机，重启应用后自动恢复。',
+      'settings.loginSnapshotSaved': '已找到保存的登录快照，重启应用后会自动恢复。',
+      'settings.loginSnapshotMissing': '还没有保存的登录快照。登录后等几秒，再重新打开这个设置。',
+      'settings.clearLogin': '清除已保存登录',
+      'settings.loginCleared': '已清除保存的登录；下次重启应用需要重新登录。',
       'settings.reset': '恢复默认',
       'settings.cancel': '取消',
       'settings.save': '保存并打开',
@@ -109,6 +123,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'ウェブアドレス',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': '既定: https://chat.deepseek.com/',
+      'settings.loginHint': 'ログイン状態はこの端末に保存され、アプリの再起動後に復元されます。',
+      'settings.loginSnapshotSaved': '保存済みのログインスナップショットがあります。アプリの再起動後に復元されます。',
+      'settings.loginSnapshotMissing': '保存されたログインスナップショットはまだありません。ログイン後、数秒待ってからこの設定を開き直してください。',
+      'settings.clearLogin': '保存したログインを削除',
+      'settings.loginCleared': '保存したログインを削除しました。次回アプリ起動時に再ログインが必要です。',
       'settings.reset': '既定に戻す',
       'settings.cancel': 'キャンセル',
       'settings.save': '保存して開く',
@@ -136,6 +155,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Dirección web',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'Predeterminada: https://chat.deepseek.com/',
+      'settings.loginHint': 'El estado de inicio de sesión se guarda en este dispositivo y se restaura al reiniciar la aplicación.',
+      'settings.loginSnapshotSaved': 'Se encontró una instantánea de inicio de sesión guardada; se restaurará al reiniciar la aplicación.',
+      'settings.loginSnapshotMissing': 'Aún no hay una instantánea de inicio de sesión guardada. Después de iniciar sesión, espera unos segundos y vuelve a abrir este diálogo.',
+      'settings.clearLogin': 'Borrar inicio de sesión guardado',
+      'settings.loginCleared': 'Inicio de sesión guardado borrado. Tendrás que iniciar sesión de nuevo al reiniciar la aplicación.',
       'settings.reset': 'Restablecer',
       'settings.cancel': 'Cancelar',
       'settings.save': 'Guardar y abrir',
@@ -163,6 +187,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Adresse web',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'Par défaut : https://chat.deepseek.com/',
+      'settings.loginHint': "L'état de connexion est enregistré sur cet appareil et restauré après le redémarrage de l'application.",
+      'settings.loginSnapshotSaved': "Une sauvegarde de connexion a été trouvée ; elle sera restaurée après le redémarrage de l'application.",
+      'settings.loginSnapshotMissing': "Aucune sauvegarde de connexion pour l'instant. Après vous être connecté, attendez quelques secondes et rouvrez ce dialogue.",
+      'settings.clearLogin': 'Effacer la connexion enregistrée',
+      'settings.loginCleared': "Connexion enregistrée effacée. Vous devrez vous reconnecter après le redémarrage de l'application.",
       'settings.reset': 'Rétablir la valeur par défaut',
       'settings.cancel': 'Annuler',
       'settings.save': 'Enregistrer et ouvrir',
@@ -190,6 +219,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Webadresse',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'Standard: https://chat.deepseek.com/',
+      'settings.loginHint': 'Der Anmeldestatus wird auf diesem Gerät gespeichert und nach dem Neustart der App wiederhergestellt.',
+      'settings.loginSnapshotSaved': 'Ein gespeicherter Anmelde-Snapshot wurde gefunden; er wird nach dem Neustart der App wiederhergestellt.',
+      'settings.loginSnapshotMissing': 'Noch kein gespeicherter Anmelde-Snapshot. Warte nach der Anmeldung einige Sekunden und öffne diesen Dialog erneut.',
+      'settings.clearLogin': 'Gespeicherte Anmeldung löschen',
+      'settings.loginCleared': 'Gespeicherte Anmeldung gelöscht. Nach dem Neustart der App musst du dich erneut anmelden.',
       'settings.reset': 'Standard wiederherstellen',
       'settings.cancel': 'Abbrechen',
       'settings.save': 'Speichern und öffnen',
@@ -217,6 +251,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Веб-адрес',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'По умолчанию: https://chat.deepseek.com/',
+      'settings.loginHint': 'Состояние входа сохраняется на этом устройстве и восстанавливается после перезапуска приложения.',
+      'settings.loginSnapshotSaved': 'Найден сохранённый снимок входа; он будет восстановлен после перезапуска приложения.',
+      'settings.loginSnapshotMissing': 'Сохранённого снимка входа пока нет. После входа подождите несколько секунд и откройте этот диалог снова.',
+      'settings.clearLogin': 'Удалить сохранённый вход',
+      'settings.loginCleared': 'Сохранённый вход удалён. После перезапуска приложения потребуется снова войти.',
       'settings.reset': 'Сбросить по умолчанию',
       'settings.cancel': 'Отмена',
       'settings.save': 'Сохранить и открыть',
@@ -244,6 +283,11 @@ window.__ModuleLoader__.load({
       'settings.urlLabel': 'Endereço web',
       'settings.urlPlaceholder': 'https://chat.deepseek.com/',
       'settings.urlHint': 'Padrão: https://chat.deepseek.com/',
+      'settings.loginHint': 'O estado de login é salvo neste dispositivo e restaurado após reiniciar o aplicativo.',
+      'settings.loginSnapshotSaved': 'Um snapshot de login salvo foi encontrado; ele será restaurado após reiniciar o aplicativo.',
+      'settings.loginSnapshotMissing': 'Ainda não há um snapshot de login salvo. Após entrar, aguarde alguns segundos e abra este diálogo novamente.',
+      'settings.clearLogin': 'Limpar login salvo',
+      'settings.loginCleared': 'Login salvo removido. Você precisará entrar novamente após reiniciar o aplicativo.',
       'settings.reset': 'Restaurar padrão',
       'settings.cancel': 'Cancelar',
       'settings.save': 'Salvar e abrir',
@@ -312,6 +356,16 @@ window.__ModuleLoader__.load({
       }
     }
 
+    function originOf(value) {
+      const normalized = normalizeUrl(value)
+      if (normalized === null) return null
+      try {
+        return new URL(normalized).origin
+      } catch {
+        return null
+      }
+    }
+
     function getStorage(name) {
       try {
         const value = globalThis[name]
@@ -365,6 +419,118 @@ window.__ModuleLoader__.load({
       if (normalized === null) return false
       return writeJson(storage, LAST_URL_KEY, { url: normalized })
     }
+
+    function isHttpOrigin(value) {
+      try {
+        const url = new URL(value)
+        return url.protocol === 'http:' || url.protocol === 'https:'
+      } catch {
+        return false
+      }
+    }
+
+    /**
+     * Guest localStorage snapshots, keyed by origin. The desktop webview
+     * partition is process-only, so the guest loses its localStorage on app
+     * restart; keeping a copy in the DSH app storage lets the panel restore the
+     * site's own auth token (`userToken` on DeepSeek) after restart.
+     */
+    function readGuestStorage(origin, storage = getStorage('localStorage')) {
+      if (!isHttpOrigin(origin)) return null
+      const parsed = readJson(storage, GUEST_STORAGE_KEY)
+      const sites = parsed?.sites
+      if (sites === null || typeof sites !== 'object' || Array.isArray(sites)) return null
+      const entry = sites[origin]
+      if (entry === null || typeof entry !== 'object' || entry.data === null || typeof entry.data !== 'object') return null
+      const data = {}
+      for (const [key, value] of Object.entries(entry.data)) {
+        if (typeof key === 'string' && typeof value === 'string') data[key] = value
+      }
+      return Object.keys(data).length > 0 ? data : null
+    }
+
+    function saveGuestStorage(origin, data, storage = getStorage('localStorage')) {
+      if (!isHttpOrigin(origin) || data === null || typeof data !== 'object' || Array.isArray(data)) return false
+      const cleaned = {}
+      let size = 2
+      for (const [key, value] of Object.entries(data)) {
+        if (typeof key !== 'string' || typeof value !== 'string') continue
+        if (key.length > 1024 || value.length > 500000) continue
+        size += key.length + value.length + 8
+        if (size > GUEST_STORAGE_LIMIT) return false
+        cleaned[key] = value
+      }
+      if (Object.keys(cleaned).length === 0) return false
+      const parsed = readJson(storage, GUEST_STORAGE_KEY)
+      const previous = parsed?.sites !== null && typeof parsed?.sites === 'object' && !Array.isArray(parsed.sites)
+        ? parsed.sites
+        : {}
+      const sites = { ...previous }
+      sites[origin] = { savedAt: Date.now(), data: cleaned }
+      const origins = Object.keys(sites)
+      if (origins.length > GUEST_STORAGE_SITES) {
+        origins.sort((left, right) => (sites[left]?.savedAt ?? 0) - (sites[right]?.savedAt ?? 0))
+        for (const old of origins.slice(0, origins.length - GUEST_STORAGE_SITES)) delete sites[old]
+      }
+      return writeJson(storage, GUEST_STORAGE_KEY, { version: 1, sites })
+    }
+
+    function removeGuestStorage(origin, storage = getStorage('localStorage')) {
+      if (!isHttpOrigin(origin)) return false
+      const parsed = readJson(storage, GUEST_STORAGE_KEY)
+      const sites = parsed?.sites
+      if (sites === null || typeof sites !== 'object' || Array.isArray(sites) || !(origin in sites)) return false
+      const next = { ...sites }
+      delete next[origin]
+      return writeJson(storage, GUEST_STORAGE_KEY, { version: 1, sites: next })
+    }
+
+    function clearGuestStorage(storage = getStorage('localStorage')) {
+      if (storage === null) return false
+      try {
+        storage.removeItem(GUEST_STORAGE_KEY)
+        return true
+      } catch {
+        return false
+      }
+    }
+
+    /**
+     * One restore attempt per app renderer session and origin. sessionStorage
+     * survives a page reload (so a reload keeps the process partition) but is
+     * cleared when the application exits, which is exactly when the snapshot
+     * needs to be injected again.
+     */
+    function claimGuestRestore(origin, storage = getStorage('sessionStorage')) {
+      if (!isHttpOrigin(origin) || storage === null) return true
+      const key = RESTORE_MARKER_PREFIX + origin
+      try {
+        if (storage.getItem(key) === '1') return false
+        storage.setItem(key, '1')
+        return true
+      } catch {
+        return true
+      }
+    }
+
+    /** Whether live guest storage already contains DeepSeek's auth token. */
+    function hasLiveLogin(data) {
+      if (data === null || typeof data !== 'object' || Array.isArray(data)) return false
+      const raw = data.userToken
+      if (typeof raw !== 'string' || raw.length === 0) return false
+      try {
+        const parsed = JSON.parse(raw)
+        if (parsed !== null && typeof parsed === 'object') {
+          return typeof parsed.value === 'string' && parsed.value.length > 0
+        }
+      } catch {
+        /* a plain token string is also valid */
+      }
+      return raw !== 'null' && raw !== '""' && raw !== '{}'
+    }
+
+    /** Read every guest localStorage entry as a plain object. */
+    const GUEST_READ_EXPRESSION = '(() => { const data = {}; for (let index = 0; index < localStorage.length; index += 1) { const key = localStorage.key(index); if (typeof key === "string") data[key] = localStorage.getItem(key); } return data })()'
 
     /** Tiny observable store shared by the placeholder and the persistent panel. */
     function createSnapshotStore(initial) {
@@ -425,6 +591,9 @@ window.__ModuleLoader__.load({
     function createWebviewController(options) {
       const { document, bridge, container, workspaceKey = WORKSPACE_KEY, onState } = options
       const userAgent = typeof options.userAgent === 'string' ? options.userAgent : ''
+      const readSavedStorage = typeof options.readGuestStorage === 'function' ? options.readGuestStorage : () => null
+      const writeSavedStorage = typeof options.writeGuestStorage === 'function' ? options.writeGuestStorage : () => false
+      const removeSavedStorage = typeof options.removeGuestStorage === 'function' ? options.removeGuestStorage : () => false
       let disposed = false
       let element = null
       let lease = null
@@ -432,6 +601,13 @@ window.__ModuleLoader__.load({
       let pendingUrl = normalizeUrl(options.url ?? '') ?? null
       let failure = null
       let releaseOpen = null
+      let configuredOrigin = originOf(options.url ?? '')
+      let storageState = 'idle'
+      const restoredOrigins = new Set()
+      let restoreAllowed = typeof options.claimRestore === 'function' ? options.claimRestore(configuredOrigin) : true
+      let syncing = false
+      let captureTimer = null
+      let lastSavedSignature = ''
       const abort = new AbortController()
 
       const publish = (patch) => {
@@ -486,6 +662,91 @@ window.__ModuleLoader__.load({
         publish(patch)
       }
 
+      const syncStorage = async () => {
+        const target = element
+        if (disposed || target === null || !ready || configuredOrigin === null || syncing || storageState === 'failed') return
+        const current = normalizeUrl(target.getURL())
+        if (current === null) return
+        const origin = new URL(current).origin
+        if (origin !== configuredOrigin) return
+        syncing = true
+        try {
+          if (storageState === 'idle') {
+            if (restoredOrigins.has(origin) || !restoreAllowed) {
+              storageState = 'ready'
+            } else {
+              restoredOrigins.add(origin)
+              let live = null
+              if (typeof target.executeJavaScript === 'function') {
+                try {
+                  live = await target.executeJavaScript(GUEST_READ_EXPRESSION, false)
+                } catch (error) {
+                  console.warn('[dsh-chat] reading the live guest storage failed:', messageOf(error))
+                }
+              }
+              if (disposed || element !== target) return
+              if (hasLiveLogin(live)) {
+                // A live login is newer than any snapshot in this process.
+                storageState = 'ready'
+              } else {
+                storageState = 'restoring'
+                let snapshot = null
+                try {
+                  snapshot = readSavedStorage(origin)
+                } catch (error) {
+                  console.warn('[dsh-chat] reading the saved web login failed:', messageOf(error))
+                }
+                if (snapshot !== null && typeof snapshot === 'object' && typeof target.executeJavaScript === 'function') {
+                  try {
+                    const serialized = JSON.stringify(snapshot)
+                      .replace(/\u2028/g, '\\u2028')
+                      .replace(/\u2029/g, '\\u2029')
+                    await target.executeJavaScript(`(() => { const data = ${serialized}; for (const key of Object.keys(data)) { const value = data[key]; if (typeof value === 'string') localStorage.setItem(key, value); } return true })()`, false)
+                    if (disposed || element !== target) return
+                    storageState = 'ready'
+                    if (typeof target.reload === 'function') target.reload()
+                    return
+                  } catch (error) {
+                    storageState = 'failed'
+                    console.warn('[dsh-chat] restoring the saved web login failed:', messageOf(error))
+                    return
+                  }
+                }
+                storageState = 'ready'
+              }
+            }
+          }
+          if (disposed || element !== target) return
+          if (storageState === 'ready' && typeof target.executeJavaScript === 'function') {
+            const data = await target.executeJavaScript(GUEST_READ_EXPRESSION, false)
+            if (disposed || element !== target) return
+            if (data !== null && typeof data === 'object' && !Array.isArray(data)) {
+              if (Object.keys(data).length === 0) {
+                lastSavedSignature = ''
+                try {
+                  removeSavedStorage(origin)
+                } catch (error) {
+                  console.warn('[dsh-chat] removing the saved web login failed:', messageOf(error))
+                }
+              } else {
+                const signature = JSON.stringify(data)
+                if (signature !== lastSavedSignature) {
+                  try {
+                    if (writeSavedStorage(origin, data)) lastSavedSignature = signature
+                  } catch (error) {
+                    console.warn('[dsh-chat] saving the web login failed:', messageOf(error))
+                  }
+                }
+              }
+            }
+          }
+        } catch (error) {
+          console.warn('[dsh-chat] guest storage sync failed:', messageOf(error))
+        } finally {
+          syncing = false
+        }
+      }
+
       const flush = () => {
         if (disposed || !ready || element === null || pendingUrl === null) return
         const target = pendingUrl
@@ -516,6 +777,10 @@ window.__ModuleLoader__.load({
         element = null
         ready = false
         pendingUrl = null
+        if (captureTimer !== null) {
+          clearInterval(captureTimer)
+          captureTimer = null
+        }
         if (typeof releaseOpen === 'function') {
           try {
             releaseOpen()
@@ -572,13 +837,19 @@ window.__ModuleLoader__.load({
             if (failure === null) publish({ status: 'ready' })
             flush()
           })
-          listen(el, 'did-navigate', () => observe())
+          listen(el, 'did-navigate', () => {
+            observe()
+            void syncStorage()
+          })
           listen(el, 'did-navigate-in-page', (event) => {
             if (event === undefined || event.isMainFrame !== false) observe()
           })
           listen(el, 'page-title-updated', () => observe())
           listen(el, 'did-start-loading', () => publish({ loading: true }))
-          listen(el, 'did-stop-loading', () => observe())
+          listen(el, 'did-stop-loading', () => {
+            observe()
+            void syncStorage()
+          })
           listen(el, 'did-fail-load', (event) => {
             if (event !== undefined && event !== null && event.isMainFrame === false) return
             if (event !== undefined && event !== null && event.errorCode === -3) return
@@ -597,7 +868,7 @@ window.__ModuleLoader__.load({
           })
           if (typeof bridge.onOpenRequested === 'function') {
             const unsubscribe = bridge.onOpenRequested(nextLease, (target) => {
-              load(target)
+              navigate(target)
             })
             releaseOpen = typeof unsubscribe === 'function' ? unsubscribe : null
             abort.signal.addEventListener('abort', () => {
@@ -608,6 +879,7 @@ window.__ModuleLoader__.load({
             }, { once: true })
           }
           container.append(el)
+          captureTimer = setInterval(() => { void syncStorage() }, 5000)
         } catch (error) {
           fail(error)
           const id = lease
@@ -626,7 +898,7 @@ window.__ModuleLoader__.load({
         }
       }
 
-      function load(value) {
+      function navigate(value) {
         const next = normalizeUrl(value)
         if (next === null) {
           fail(new Error('invalid web address'))
@@ -636,6 +908,22 @@ window.__ModuleLoader__.load({
         pendingUrl = next
         publish({ status: ready ? 'ready' : 'loading', error: '', loading: true })
         flush()
+      }
+
+      function load(value) {
+        const next = normalizeUrl(value)
+        if (next === null) {
+          fail(new Error('invalid web address'))
+          return
+        }
+        const origin = originOf(next)
+        if (origin !== null && origin !== configuredOrigin) {
+          configuredOrigin = origin
+          storageState = 'idle'
+          restoredOrigins.delete(origin)
+          restoreAllowed = typeof options.claimRestore === 'function' ? options.claimRestore(origin) : true
+        }
+        navigate(next)
       }
 
       const controller = {
@@ -740,6 +1028,8 @@ window.__ModuleLoader__.load({
       const [settingsOpen, setSettingsOpen] = React.useState(false)
       const [draftUrl, setDraftUrl] = React.useState('')
       const [draftError, setDraftError] = React.useState('')
+      const [settingsNotice, setSettingsNotice] = React.useState('')
+      const [settingsSnapshot, setSettingsSnapshot] = React.useState(null)
       const containerRef = React.useRef(null)
       const controllerRef = React.useRef(null)
       const configRef = React.useRef(configUrl)
@@ -781,6 +1071,10 @@ window.__ModuleLoader__.load({
           workspaceKey: WORKSPACE_KEY,
           url: initialUrl,
           userAgent: props.userAgent,
+          readGuestStorage: props.readGuestStorage,
+          writeGuestStorage: props.writeGuestStorage,
+          removeGuestStorage: props.removeGuestStorage,
+          claimRestore: props.claimGuestRestore,
           onState: (patch) => { onStateRef.current(patch) },
         })
         controllerRef.current = controller
@@ -801,11 +1095,21 @@ window.__ModuleLoader__.load({
         if (active) return
         setSettingsOpen(false)
         setDraftError('')
+        setSettingsNotice('')
       }, [active])
 
       const openSettings = () => {
         setDraftUrl(configRef.current)
         setDraftError('')
+        setSettingsNotice('')
+        let saved = false
+        try {
+          const snapshot = props.readGuestStorage(new URL(configRef.current).origin)
+          saved = snapshot !== null && props.hasLiveLogin(snapshot)
+        } catch {
+          saved = false
+        }
+        setSettingsSnapshot(saved)
         setSettingsOpen(true)
       }
 
@@ -821,6 +1125,7 @@ window.__ModuleLoader__.load({
         }
         setConfigUrl(normalized)
         props.writeLastUrl(normalized)
+        setSettingsNotice('')
         setSettingsOpen(false)
         controllerRef.current?.load(normalized)
       }
@@ -828,6 +1133,12 @@ window.__ModuleLoader__.load({
       const resetSettings = () => {
         setDraftUrl(props.defaultUrl)
         setDraftError('')
+      }
+
+      const clearLogin = () => {
+        const cleared = props.clearGuestStorage()
+        setSettingsSnapshot(false)
+        setSettingsNotice(cleared ? t('settings.loginCleared') : t('settings.saveFailed'))
       }
 
       const openExternal = () => {
@@ -855,7 +1166,9 @@ window.__ModuleLoader__.load({
         closeLabel: t('settings.cancel'),
         className: 'dsh-chat-settings-dialog',
         footer: h('div', { className: 'dsh-chat-settings-footer' },
-          h(Button, { variant: 'ghost', onClick: resetSettings }, t('settings.reset')),
+          h('div', { className: 'dsh-chat-settings-left' },
+            h(Button, { variant: 'ghost', onClick: resetSettings }, t('settings.reset')),
+            h(Button, { variant: 'ghost', onClick: clearLogin }, t('settings.clearLogin'))),
           h('div', { className: 'dsh-chat-settings-actions' },
             h(Button, { variant: 'outline', onClick: () => setSettingsOpen(false) }, t('settings.cancel')),
             h(Button, { variant: 'primary', onClick: saveSettings }, t('settings.save')))),
@@ -882,7 +1195,10 @@ window.__ModuleLoader__.load({
           },
         }),
         h('p', { className: 'dsh-chat-settings-hint' }, t('settings.urlHint')),
-        draftError.length > 0 && h('p', { className: 'dsh-chat-settings-error', role: 'alert' }, draftError)))
+        h('p', { className: 'dsh-chat-settings-hint' }, t('settings.loginHint')),
+        settingsSnapshot !== null && h('p', { className: 'dsh-chat-settings-hint' }, settingsSnapshot ? t('settings.loginSnapshotSaved') : t('settings.loginSnapshotMissing')),
+        draftError.length > 0 && h('p', { className: 'dsh-chat-settings-error', role: 'alert' }, draftError),
+        settingsNotice.length > 0 && h('p', { className: 'dsh-chat-settings-notice', role: 'status' }, settingsNotice)))
 
       const overlay = view.status === 'unavailable'
         ? h('div', { className: 'dsh-chat-overlay' },
@@ -1051,7 +1367,9 @@ window.__ModuleLoader__.load({
       '.dsh-chat-settings-input:focus{border-color:var(--dsw-alias-state-business-primary);}',
       '.dsh-chat-settings-hint{margin:0;font-size:11.5px;line-height:1.5;color:var(--dsw-alias-label-caption);}',
       '.dsh-chat-settings-error{margin:0;font-size:12px;color:var(--dsw-alias-label-error);}',
-      '.dsh-chat-settings-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;}',
+      '.dsh-chat-settings-notice{margin:0;font-size:12px;line-height:1.5;color:var(--dsw-alias-state-success-primary);}',
+      '.dsh-chat-settings-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;flex-wrap:wrap;}',
+      '.dsh-chat-settings-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}',
       '.dsh-chat-settings-actions{display:flex;gap:8px;}',
     ].join('')
 
@@ -1071,6 +1389,13 @@ window.__ModuleLoader__.load({
         saveConfig,
         writeLastUrl,
         normalizeUrl,
+        readGuestStorage,
+        saveGuestStorage,
+        writeGuestStorage: saveGuestStorage,
+        removeGuestStorage,
+        clearGuestStorage,
+        claimGuestRestore,
+        hasLiveLogin,
         translate: t,
         userAgent: standardUserAgent(),
       }
